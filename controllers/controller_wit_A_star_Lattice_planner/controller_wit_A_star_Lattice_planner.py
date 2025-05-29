@@ -64,6 +64,7 @@ class PrecomputedLatticeGraph:
 
         # Graph storage
         self.states = set()  # All valid states in the lattice
+        # For edges, we use defaultdict because the key existance is not needed to be checked prior
         self.edges = defaultdict(list)  # state -> list of outgoing edges
         self.state_lookup = {}  # (x,y,theta) -> state object
 
@@ -239,9 +240,9 @@ class LatticeRobotController:
         # Initialize planner with pre-built lattice
         self.planner = LatticePathPlanner(world)
 
-    def execute_mission(self, start_pose, goal_pose):
+    def execute(self, start_pose, goal_pose):
         """Execute a mission from start to goal"""
-        print(f"Mission: {start_pose} -> {goal_pose}")
+        print(f"Execution: {start_pose} -> {goal_pose}")
 
         # Plan path using pre-built lattice
         path = self.planner.plan_path(start_pose, goal_pose)
@@ -310,9 +311,9 @@ if __name__ == "__main__":
     ]
 
     for start, goal in missions:
-        print(f"\n--- New Mission ---")
-        success = controller.execute_mission(start, goal)
+        print(f"\n--- New Path ---")
+        success = controller.execute(start, goal)
         if not success:
-            print("Mission failed!")
+            print("Path failed!")
             break
-        print("Mission completed!\n")
+        print("Path completed!\n")
